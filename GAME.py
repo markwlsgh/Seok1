@@ -6,87 +6,57 @@ from pico2d import *
 
 running = None
 
-class Grass:
+class Map:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('map2.png')
 
     def draw(self):
-        self.image.draw(400, 30)
+        self.image.draw(212,162)
 
+class Cloud:
+    def __init__(self):
+        self.image = load_image('cloud.png')
+        self.x, self.y = random.randint(-100,425),random.randint(170,325)
+
+    def draw(self):
+        self.image.draw(self.x,self.y)
+
+    def update(self):
+        self.x +=2
+
+        if self.x > 440:
+            self.x = -10
+            self.y = random.randint(170,325)
 
 class Pikachu:
     image = None
 
+    STOP,LEFT_RUN, RIGHT_RUN = 0, 1 , 2
 
-    LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
-
+    def handle_stop(self):
+        pass
 
     def handle_left_run(self):
-        global change
-        self.x -= 5
-        self.run_frames += 1
-        if self.x < 0 :
-            self.state = self.RIGHT_RUN
-            self.x = 0
-        if self.run_frames == 100:
-            self.state = self.LEFT_STAND
-            self.stand_frames = 0
-        if change == False:
-            self.state = self.RIGHT_RUN
-            change = True
-            self.stand_frames =0
+        global left
 
-    def handle_left_stand(self):
-        global change
-
-        self.stand_frames +=1
-        if self.stand_frames == 50:
-            self.state = self.LEFT_RUN
-            self.run_frames = 0
-        if change == False:
-            self.state = self.LEFT_RUN
-            change = True
-            self.run_frames = 0
+        self.state = self.LEFT_RUN
+        if left == True:
+            self.x -= 5
 
 
     def handle_right_run(self):
-        global change
-
-        self.x += 5
-        self.run_frames += 1
-        if self.x > 800:
-            self.state = self.LEFT_RUN
-            self.x = 800
-        if self.run_frames == 100:
-            self.state = self.RIGHT_STAND
-            self.stand_frames = 0
-        if change == False:
-            self.state = self.LEFT_RUN
-            change = True
-            self.stand_frames = 0
-
-
-
-    def handle_right_stand(self):
-        global change
-
-        self.stand_frames +=1
-        if self.stand_frames == 50:
-            self.state = self.RIGHT_RUN
-            self.run_frames = 0
-        if change == False:
-                self.state = self.RIGHT_RUN
-                change = True
-                self.run_frames = 0
-
-
+        global right
+        global running
+        self.state = self.RIGHT_RUN
+        if right == True:
+            self.x += 5
 
     handle_state = {
+            STOP:handle_stop,
             LEFT_RUN: handle_left_run,
-            RIGHT_RUN : handle_right_run,
-            LEFT_STAND: handle_left_stand,
-            RIGHT_STAND: handle_right_stand
+            RIGHT_RUN : handle_right_run
     }
+
 
     def update(self):
         self.frame = (self.frame+1)%5
@@ -94,11 +64,10 @@ class Pikachu:
 
 
     def __init__(self):
-        self.x, self.y = random.randint(10, 500), 90
-        self.frame = random.randint(0, 7)
-        self.run_frames = 0
-        self.stand_frames = 0
-        self.state = self.RIGHT_RUN
+        self.x, self.y = 150,75
+        self.frame = random.randint(0, 5)
+        self.right, self.left = False, False
+        self.state = self.STOP
         if Pikachu.image == None:
             Pikachu.image = load_image('Pikachu.png')
 
@@ -106,16 +75,46 @@ class Pikachu:
         self.image.clip_draw(self.frame * 64, 360, 64, 74, self.x, self.y)
 
 
+
+
+
+
+
+
+
+
+
 def handle_events():
-    global running ,change
+    global running,right,left
+    global pikachu
+
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             running = False
         if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif (event.type, event.key) == (SDL_KEYDOWN , SDLK_SPACE):
-            change = False
+        if event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+            pikachu.state = pikachu.RIGHT_RUN
+            right = True
+        if (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
+            pikachu.state = pikachu.LEFT_RUN
+            left = True
+        if (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT):
+            pikachu.state = pikachu.STOP
+        if (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT):
+            pikachu.state = pikachu.STOP
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,21 +122,30 @@ def handle_events():
 def main():
 
     open_canvas(425,325)
-
+    global pikachu
     pikachu = Pikachu()
-    grass = Grass()
+    map = Map()
+    clouds = [Cloud() for i in range(20)]
 
-    global running, change
+    global running, right, left
+
     running = True
-    change = True
+    right = False
+    left = False
 
     while running:
         handle_events()
 
+
         pikachu.update()
 
         clear_canvas()
-        grass.draw()
+
+        map.draw()
+        for cloud in clouds:
+            cloud.update()
+        for cloud in clouds:
+            cloud.draw()
         pikachu.draw()
         update_canvas()
 
