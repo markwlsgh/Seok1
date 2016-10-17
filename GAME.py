@@ -37,12 +37,32 @@ class Cloud:
         self.Weight += self.Cdir
         if self.Weight < 47:
             self.Cdir = 1
-        if self.Weight > 55:
+        if self.Weight > 52:
             self.Cdir = -1
         if self.x > 440:
             self.x = -10
             self.y = random.randint(170,325)
 
+class Wave:
+
+
+    def __init__(self):
+        self.image = load_image('wave.png')
+        self.x =0
+        self.y = random.randint(-15,-10)
+        self.wDir = 1
+
+    def draw(self):
+            self.image.draw(self.x,self.y)
+
+    def update(self):
+        self.y += self.wDir
+        if self.y > 5:
+            self.wDir = -1
+            self.y = 5
+        if self.y < -15:
+            self.wDir = 1
+            self.y = -15
 
 class Ball:
     def __init__(self):
@@ -60,7 +80,7 @@ class Ball:
 
 class Score:
     def __init__(self):
-        self.score1 = 10
+        self.score1 = 5
         self.score2 = 0
         self.image = load_image('score.png')
 
@@ -184,21 +204,31 @@ def handle_events():
 
 
 def enter():
-    global pikachu,map,clouds,ball,score
+    global pikachu , map, clouds, ball, score, waves
     pikachu = Pikachu()
     map = Map()
     clouds = [Cloud() for i in range(15)]
     ball = Ball()
     score = Score()
+    waves = [Wave() for i in range(28)]
+    for i in range(28):
+        waves[i].x = i * 16
+    global running, right, left
+
+    running = True
+    right = False
+    left = False
+    up = False
 
 
 def exit():
-    global pikachu, map, clouds, ball, score
+    global pikachu, map, clouds, ball, score,waves
     del(pikachu)
     del(map)
     del(clouds)
     del(ball)
     del(score)
+    del(waves)
 
 
 def pause():
@@ -210,69 +240,24 @@ def resume():
 
 def update():
     pikachu.update()
+    for cloud in clouds:
+        cloud.update()
     ball.update()
     score.update()
-
+    for wave in waves:
+        wave.update()
+    clear_canvas()
 
 def draw():
-    clear_canvas()
     map.draw()
-    ball.draw()
+    for cloud in clouds:
+        cloud.draw()
     score.draw()
+    ball.draw()
     pikachu.draw()
+    for wave in waves:
+        wave.draw()
     update_canvas()
 
+    delay(0.04)
 
-
-
-
-
-
-
-
-
-def main():
-
-    open_canvas(425,325)
-    global pikachu
-    pikachu = Pikachu()
-    map = Map()
-    clouds = [Cloud() for i in range(15)]
-    ball = Ball()
-    score = Score()
-
-    global running, right, left
-
-    running = True
-    right = False
-    left = False
-    up = False
-
-    while running:
-        handle_events()
-
-
-        pikachu.update()
-        for cloud in clouds:
-            cloud.update()
-        ball.update()
-        score.update()
-
-        clear_canvas()
-
-
-        map.draw()
-        for cloud in clouds:
-            cloud.draw()
-        score.draw()
-        ball.draw()
-        pikachu.draw()
-        update_canvas()
-
-        delay(0.04)
-
-    close_canvas()
-
-
-if __name__ == '__main__':
-    main()
