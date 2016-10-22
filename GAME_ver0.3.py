@@ -78,6 +78,9 @@ class Ball:
         if self.y > 65:
             self.y -= 5
 
+        if self.x < Pikachu.x
+
+
 class Score:
     def __init__(self):
         self.score1 = 5
@@ -129,9 +132,9 @@ class Pikachu:
 
         self.state = self.JUMP
         if up == True:
-            if self.y < 200:
+            if count < 10:
                 self.y += 10
-        if self.y > 185:
+        if count > 10:
             up = False
         if up == False:
             if self.y > 80:
@@ -176,7 +179,7 @@ class Pikachu:
 
 
 def handle_events():
-    global running,right,left,up
+    global running,right,left,up, count
     global pikachu
 
     events = get_events()
@@ -198,6 +201,7 @@ def handle_events():
         if (event.type, event.key) == (SDL_KEYDOWN, SDLK_UP):
             pikachu.state = pikachu.JUMP
             up = True
+            count = 0
 
 
 
@@ -213,12 +217,13 @@ def enter():
     waves = [Wave() for i in range(28)]
     for i in range(28):
         waves[i].x = i * 16
-    global running, right, left
+    global running, right, left, up, count
 
     running = True
     right = False
     left = False
     up = False
+    count = 0
 
 
 def exit():
@@ -239,6 +244,7 @@ def resume():
     pass
 
 def update():
+    count += 1
     pikachu.update()
     for cloud in clouds:
         cloud.update()
