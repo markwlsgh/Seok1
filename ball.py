@@ -19,7 +19,7 @@ class Ball:
         self.x, self.y = 30, 300
         self.speed = 150
         self.x_dir =0
-        self.y_dir =0
+        self.y_dir = 1
         self.r = 5
         self.life_time = 0.0
         self.total_frames = 0.0
@@ -40,7 +40,16 @@ class Ball:
         self.frame = int(self.total_frames) % 5
         self.x += (self.x_dir * distance)
         self.x = clamp(0, self.x, 800)
-        self.y -= frame_time * self.speed
+        self.y -= (self.y_dir * distance)
+
+        if(self.y > 325 ):
+            self.y_dir *= -1
+        #if (self.y > 325):
+        #    self.y_dir *= -1
+        if (self.x > 425):
+            self.x_dir *= -1
+        if (self.x < 0):
+            self.x_dir *= -1
 
     def get_bb(self):
         return  self.x -20 , self.y - 20, self.x + 20 , self.y+20
@@ -52,8 +61,8 @@ class Ball:
         self.fall_speed =0
 
     def move(self, frame_time):
-        self.speed = 20
-        self.x -= frame_time * self.speed
+        self.x_dir *= -1
+        self.y_dir *= -1
 
 
 

@@ -4,8 +4,8 @@ import game_framework
 
 from ball import Ball # import Boy class from boy.py
 from map import Map
-from map import Cloud
-from map import Wave
+from map_deko import Cloud
+from map_deko import Wave
 from pikachu import Pikachu
 from score import  Score
 
@@ -92,6 +92,11 @@ def update(frame_time):
         wave.update(frame_time)
     clear_canvas()
 
+    if collide(pikachu, ball):
+        ball.move(frame_time)
+
+    if collide(map,ball):
+        ball.move(frame_time)
 
 def draw(frame_time):
     clear_canvas()
