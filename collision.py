@@ -7,34 +7,34 @@ from map import Map
 from map import Cloud
 from map import Wave
 from pikachu import Pikachu
-
-
+from score import  Score
 
 name = "collision"
 
 pikachu = None
 ball = None
-map = None
+Map = None
+Cloud = None
 brick = None
 
 
 def create_world():
-    global boy, grass, balls, big_balls, brick
-    boy = Boy()
-    big_balls = [BigBall() for i in range(10)]
-    balls = [Ball() for i in range(10)]
-    balls = big_balls + balls
-    grass = Grass()
-    brick = Brick()
-
+    global pikachu , map, clouds, ball, score, waves
+    pikachu = Pikachu()
+    map = Map()
+    ball = Ball()
+    score = Score()
+    waves = [Wave() for i in range(28)]
+    for i in range(28):
+        waves[i].x = i * 16
 def destroy_world():
-    global boy, grass, balls, big_balls , brick
-
-    del(boy)
-    del(balls)
-    del(grass)
-    del(big_balls)
-    del(brick)
+    global pikachu, map, clouds, ball, score,waves
+    del(pikachu)
+    del(map)
+    del(clouds)
+    del(ball)
+    del(score)
+    del(waves)
 
 
 def enter():
@@ -65,7 +65,7 @@ def handle_events(frame_time):
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
             else:
-                boy.handle_event(event)
+                pikachu.handle_event(event)
 
 
 
@@ -81,7 +81,7 @@ def collide(a, b):
     return True
 
 def update(frame_time):
-    boy.update(frame_time)
+    pikachu.update(frame_time)
     for ball in balls:
         ball.update(frame_time)
 

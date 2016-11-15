@@ -22,17 +22,18 @@ class Cloud:
         self.image = load_image('cloud.png')
         self.x, self.y = random.randint(-100,425),random.randint(170,325)
         self.Cdir = 1
+        self.speed = random.randint(50,120)
         self.Height = random.randint(20,30)
         self.Weight = random.randint(47,56)
 
     def draw(self):
         self.image.draw(self.x,self.y, self.Weight , self.Height)
 
-    def update(self):
-        self.x +=2
+    def update(self, frame_time):
+        self.x += frame_time * self.speed
 
-        self.Height += self.Cdir
-        self.Weight += self.Cdir
+        self.Height += frame_time * self.Cdir
+        self.Weight += frame_time *self.Cdir
         if self.Weight < 47:
             self.Cdir = 1
         if self.Weight > 52:
