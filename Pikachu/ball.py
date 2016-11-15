@@ -2,9 +2,10 @@ import random
 import math
 
 from pico2d import *
+from score import Score
 
 class Ball:
-    PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+    PIXEL_PER_METER = (10.0 / 0.2)  # 10 pixel 30 cm
     RUN_SPEED_KMPH = 20.0  # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -57,16 +58,25 @@ class Ball:
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
 
-    def stop(self):
-        self.fall_speed =0
+    def stop(self, frame_time):
+        self.y_dir*= -1
 
     def move_up(self, frame_time):
-        self.x_dir = 0
+        self.x_dir = random.randint(-1,1)/10
         self.y_dir = -1
     def move_right(self, frame_time):
-        self.x_dir = 1
+        self.x_dir = random.randint(1,4)/3
         self.y_dir = -1
 
     def move_left(self, frame_time):
-        self.x_dir = -1
+        self.x_dir = random.randint(-5,0)/3
         self.y_dir = -1
+
+    def center(self,frame_time):
+        self.x_dir *= -1
+
+    def center2(self,frame_time):
+            if( self.y > 130 ):
+                self.y_dir*=-1
+            #self.x_dir*=-1
+            pass

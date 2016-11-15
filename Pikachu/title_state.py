@@ -1,6 +1,8 @@
 import game_framework
 from pico2d import *
 import GAME
+import collision
+import start_state
 
 
 name = "TitleState"
@@ -17,16 +19,16 @@ def exit():
     del(image)
 
 
-def handle_events():
+def handle_events(frame_time):
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-                    game_framework.push_state(GAME)
+                    game_framework.push_state(collision)
 
 
-def draw():
+def draw(frame_time):
     clear_canvas()
     image.draw(212,162)
     update_canvas()
@@ -37,7 +39,7 @@ def draw():
 
 
 
-def update():
+def update(frame_time):
     pass
 
 

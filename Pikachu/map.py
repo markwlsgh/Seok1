@@ -13,12 +13,26 @@ class Map:
         self.image.draw(212,162)
 
     def get_bb(self):
-        return self.x - 212 , self.y -270 ,self.x +212, self.y -400
+        return self.x - 212 , self.y -400 ,self.x , self.y -270
+
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
 
-    def get_cc(self):
-        return self.x - 3 , self.y -190 ,self.x +5, self.y -400
-    def draw_cc(self):
-        draw_rectangle(*self.get_cc())
+    def get_bb2(self):
+        return self.x  , self.y -400 ,self.x+2 , self.y -200
+    def draw_bb2(self):
+        draw_rectangle(*self.get_bb2())
+
+    def get_bb3(self):
+        return self.x , self.y - 400, self.x + 212, self.y - 270
+
+    def draw_bb3(self):
+        draw_rectangle(*self.get_bb3())
+
+    def get_bb4(self):
+        return self.x-2  , self.y-190  ,self.x+4 , self.y - 195
+    def draw_bb4(self):
+        draw_rectangle(*self.get_bb4())
+
+
 

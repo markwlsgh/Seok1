@@ -2,7 +2,7 @@ import random
 
 from pico2d import *
 
-class Pikachu:
+class Ai:
     PIXEL_PER_METER = (10.0 / 0.3)           # 10 pixel 30 cm
     RUN_SPEED_KMPH = 20.0                    # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -19,11 +19,11 @@ class Pikachu:
 
 
     def __init__(self):
-        self.x, self.y = 0, 70
+        self.x, self.y = 300, 70
         self.frame = random.randint(0, 7)
         self.life_time = 0.0
         self.total_frames = 0.0
-        self.dir = 0
+        self.dir = 1
         self.state = self.STAND
         self.jumping = 0
         self.jumpSpeed = 280
@@ -34,8 +34,8 @@ class Pikachu:
         self.tempy = 0
         self.ch = True
         self.speed = 2
-        if Pikachu.image == None:
-            Pikachu.image = load_image('Pikachu.png')
+        if Ai.image == None:
+            Ai.image = load_image('Pikachu.png')
 
 
     def update(self, frame_time):
@@ -43,17 +43,18 @@ class Pikachu:
             return max(minimum, min(x, maximum))
 
         self.life_time += frame_time
-        distance = Pikachu.RUN_SPEED_PPS * frame_time
-        self.total_frames += Pikachu.FRAMES_PER_ACTION * Pikachu.ACTION_PER_TIME * frame_time
+        distance = Ai.RUN_SPEED_PPS * frame_time
+        self.total_frames += Ai.FRAMES_PER_ACTION * Ai.ACTION_PER_TIME * frame_time
         self.frame = int(self.total_frames) % 5
         self.x += (self.dir * distance)
         self.x = clamp(0, self.x, 800)
 
-        if( self.x > 180):
-            self.x = 180
-        if( self.x < 7):
-            self.x =7
-
+        if( self.x < 240):
+            self.x = 240
+            self.dir *= -1
+        if( self.x > 425):
+            self.x =425
+            self.dir *= -1
         if(self.jumping == 1):
             self.total_jump +=  self.jumpSpeed * frame_time
             self.y =  self.total_jump
@@ -73,7 +74,7 @@ class Pikachu:
         self.image.clip_draw(self.frame * 65, 364 - self.state*74 , 64, 64, self.x, self.y)
 
     def get_bb(self):
-        return self.x  , self.y +28 , self.x +10 , self.y +28
+        return self.x -20 , self.y-20  , self.x +20 , self.y +30
 
     def get_bb2(self):
         return self.x -10 , self.y+20 , self.x , self.y+20
