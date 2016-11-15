@@ -11,12 +11,11 @@ class Pikachu:
 
     TIME_PER_ACTION = 0.5
     ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-    FRAMES_PER_ACTION = 8
+    FRAMES_PER_ACTION = 5
 
     image = None
 
-    LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
-
+    STAND , JUMP , SKILL  = 0, 1, 2
 
 
     def __init__(self):
@@ -25,7 +24,7 @@ class Pikachu:
         self.life_time = 0.0
         self.total_frames = 0.0
         self.dir = 0
-        self.state = self.RIGHT_STAND
+        self.state = self.STAND
         self.jumping = 0
         self.jumpSpeed = 300
         self.move_speed = 150
@@ -46,7 +45,7 @@ class Pikachu:
         self.life_time += frame_time
         distance = Pikachu.RUN_SPEED_PPS * frame_time
         self.total_frames += Pikachu.FRAMES_PER_ACTION * Pikachu.ACTION_PER_TIME * frame_time
-        self.frame = int(self.total_frames) % 8
+        self.frame = int(self.total_frames) % 5
         self.x += (self.dir * distance)
         self.x = clamp(0, self.x, 800)
 
@@ -65,7 +64,7 @@ class Pikachu:
 
 
     def draw(self):
-        self.image.clip_draw(self.frame * 100, self.state * 100, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame * 65, 360, 64, 64, self.x, self.y)
 
     def get_bb(self):
         return self.x - 30 , self.y - 40 , self.x +30 , self.y +50
@@ -79,20 +78,20 @@ class Pikachu:
 
     def handle_event(self, event):
         if (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
-            if self.state in (self.RIGHT_STAND, self.LEFT_STAND, self.RIGHT_RUN):
-                self.state = self.LEFT_RUN
+            if self.state in (self.STAND, self.STAND, self.STAND):
+                self.state = self.STAND
                 self.dir = -1
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RIGHT):
-            if self.state in (self.RIGHT_STAND, self.LEFT_STAND, self.LEFT_RUN):
-                self.state = self.RIGHT_RUN
+            if self.state in (self.STAND, self.STAND, self.STAND):
+                self.state = self.STAND
                 self.dir = 1
         elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT):
-            if self.state in (self.LEFT_RUN,):
-                self.state = self.LEFT_STAND
+            if self.state in (self.STAND,):
+                self.state = self.STAND
                 self.dir = 0
         elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT):
-            if self.state in (self.RIGHT_RUN,):
-                self.state = self.RIGHT_STAND
+            if self.state in (self.STAND,):
+                self.state = self.STAND
                 self.dir = 0
 
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):

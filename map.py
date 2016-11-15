@@ -54,8 +54,8 @@ class Wave:
     def draw(self):
             self.image.draw(self.x,self.y)
 
-    def update(self):
-        self.y += self.wDir
+    def update(self, frame_time):
+        self.y += frame_time * self.wDir
         if self.y > 5:
             self.wDir = -1
             self.y = 5

@@ -22,6 +22,9 @@ class Ball:
     def get_bb(self):
         return  self.x -20 , self.y - 20, self.x + 20 , self.y+20
 
+    def draw_bb(self):
+        draw_rectangle(*self.get_bb())
+
     def stop(self):
         self.fall_speed =0
 

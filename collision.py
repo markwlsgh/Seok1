@@ -13,9 +13,10 @@ name = "collision"
 
 pikachu = None
 ball = None
-Map = None
-Cloud = None
-brick = None
+map = None
+score = None
+waves = None
+clouds = None
 
 
 def create_world():
@@ -25,6 +26,7 @@ def create_world():
     ball = Ball()
     score = Score()
     waves = [Wave() for i in range(28)]
+    clouds = [Cloud() for i in range(15)]
     for i in range(28):
         waves[i].x = i * 16
 def destroy_world():
@@ -38,7 +40,7 @@ def destroy_world():
 
 
 def enter():
-    open_canvas()
+    open_canvas(425,325)
     game_framework.reset_time()
     create_world()
 
@@ -82,44 +84,31 @@ def collide(a, b):
 
 def update(frame_time):
     pikachu.update(frame_time)
-    for ball in balls:
-        ball.update(frame_time)
-
-    for ball in balls:
-        if collide(boy, ball):
-            balls.remove(ball)
-
-    for ball in big_balls:
-        if collide(grass , ball):
-            ball.stop()
-        if collide(brick , ball):
-            ball.stop()
-            ball.move(frame_time)
-
-        if collide(boy, brick):
-            boy.stop()
-            boy.move(frame_time)
-
-    brick.update(frame_time)
-
-    #delay(0.2)
-
+    for cloud in clouds:
+        cloud.update(frame_time)
+    ball.update(frame_time)
+    score.update()
+    for wave in waves:
+        wave.update(frame_time)
+    clear_canvas()
 
 
 def draw(frame_time):
     clear_canvas()
-    grass.draw()
-    boy.draw()
-    for ball in balls:
-        ball.draw()
+    map.draw()
+    pikachu.draw()
+    for cloud in clouds:
+        cloud.draw()
+    score.draw()
+    ball.draw()
+    pikachu.draw()
+    for wave in waves:
+        wave.draw()
 
-    grass.draw_bb()
-    boy.draw_bb()
-    for ball in balls:
-        ball.draw_bb()
+    pikachu.draw_bb()
+    map.draw_bb()
+    ball.draw_bb()
 
-    brick.draw()
-    brick.draw_bb()
     update_canvas()
 
 
