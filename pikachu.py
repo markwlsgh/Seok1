@@ -49,6 +49,11 @@ class Pikachu:
         self.x += (self.dir * distance)
         self.x = clamp(0, self.x, 800)
 
+        if( self.x > 180):
+            self.x = 180
+        if( self.x < 7):
+            self.x =7
+
         if(self.jumping == 1):
             self.total_jump +=  self.jumpSpeed * frame_time
             self.y =  self.total_jump
@@ -60,11 +65,12 @@ class Pikachu:
             if (self.total_jump <= self.tempy):
                 self.jumping = 0
                 self.test = True
+                self.state = self.STAND
 
 
 
     def draw(self):
-        self.image.clip_draw(self.frame * 65, 360, 64, 64, self.x, self.y)
+        self.image.clip_draw(self.frame * 65, 364 - self.state*74 , 64, 64, self.x, self.y)
 
     def get_bb(self):
         return self.x - 10 , self.y - 30 , self.x +30 , self.y +30
@@ -78,24 +84,23 @@ class Pikachu:
 
     def handle_event(self, event):
         if (event.type, event.key) == (SDL_KEYDOWN, SDLK_LEFT):
-            if self.state in (self.STAND, self.STAND, self.STAND):
-                self.state = self.STAND
+            if self.state in (self.STAND, self.JUMP, self.STAND):
                 self.dir = -1
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_RIGHT):
-            if self.state in (self.STAND, self.STAND, self.STAND):
-                self.state = self.STAND
+            if self.state in (self.STAND, self.JUMP, self.STAND):
                 self.dir = 1
         elif (event.type, event.key) == (SDL_KEYUP, SDLK_LEFT):
             if self.state in (self.STAND,):
-                self.state = self.STAND
                 self.dir = 0
         elif (event.type, event.key) == (SDL_KEYUP, SDLK_RIGHT):
             if self.state in (self.STAND,):
-                self.state = self.STAND
+                #self.state = self.STAND
                 self.dir = 0
 
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-             if (self.jumping == 0):
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_UP):
+            if self.state in (self.STAND,):
+                self.state = self.JUMP
+            if (self.jumping == 0):
                  self.jumping = 1
                  self.tempy = self.y
 
