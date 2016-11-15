@@ -67,7 +67,7 @@ class Pikachu:
         self.image.clip_draw(self.frame * 65, 360, 64, 64, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 30 , self.y - 40 , self.x +30 , self.y +50
+        return self.x - 10 , self.y - 30 , self.x +30 , self.y +30
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())

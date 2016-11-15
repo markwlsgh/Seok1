@@ -1,4 +1,5 @@
 import random
+import math
 
 from pico2d import *
 
@@ -19,6 +20,7 @@ class Ball:
         self.speed = 150
         self.x_dir =0
         self.y_dir =0
+        self.r = 5
         self.life_time = 0.0
         self.total_frames = 0.0
         self.frame = random.randint(0,5)

@@ -4,7 +4,7 @@ from pico2d import *
 
 class Score:
     def __init__(self):
-        self.score1 = 5
+        self.score1 = 0
         self.score2 = 0
         self.image = load_image('score.png')
 

@@ -108,6 +108,7 @@ def draw(frame_time):
     pikachu.draw_bb()
     map.draw_bb()
     ball.draw_bb()
+    map.draw_cc()
 
     update_canvas()
 
