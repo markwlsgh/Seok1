@@ -82,6 +82,28 @@ def collide(a, b):
 
     return True
 
+def collide2(a, b):
+    left_a , bottom_a , right_a, top_a = a.get_bb2()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return  False
+    if right_a < left_b : return  False
+    if top_a < bottom_b : return  False
+    if bottom_a > top_b : return  False
+
+    return True
+
+def collide3(a, b):
+    left_a , bottom_a , right_a, top_a = a.get_bb3()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return  False
+    if right_a < left_b : return  False
+    if top_a < bottom_b : return  False
+    if bottom_a > top_b : return  False
+
+    return True
+
 def update(frame_time):
     pikachu.update(frame_time)
     for cloud in clouds:
@@ -93,10 +115,13 @@ def update(frame_time):
     clear_canvas()
 
     if collide(pikachu, ball):
-        ball.move(frame_time)
+        ball.move_up(frame_time)
 
-    if collide(map,ball):
-        ball.move(frame_time)
+    if collide2(pikachu, ball):
+        ball.move_left(frame_time)
+
+    if collide3(pikachu,ball):
+        ball.move_right(frame_time)
 
 def draw(frame_time):
     clear_canvas()
@@ -111,6 +136,8 @@ def draw(frame_time):
         wave.draw()
 
     pikachu.draw_bb()
+    pikachu.draw_bb2()
+    pikachu.draw_bb3()
     map.draw_bb()
     ball.draw_bb()
     map.draw_cc()
