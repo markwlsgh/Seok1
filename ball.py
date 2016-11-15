@@ -3,12 +3,24 @@ import random
 from pico2d import *
 
 class Ball:
+    PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+    RUN_SPEED_KMPH = 20.0  # Km / Hour
+    RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+    RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+    RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
+    TIME_PER_ACTION = 0.5
+    ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+    FRAMES_PER_ACTION = 8
     image = None
 
     def __init__(self):
         self.x, self.y = 30, 300
-        self.speed = 10
+        self.speed = 150
+        self.x_dir =0
+        self.y_dir =0
+        self.life_time = 0.0
+        self.total_frames = 0.0
         self.frame = random.randint(0,5)
         if self.image == None:
             self.image = load_image('ball.png')
@@ -17,6 +29,15 @@ class Ball:
         self.image.clip_draw(self.frame*40 ,40 , 40, 40, self.x, self.y)
 
     def update(self, frame_time):
+        def clamp(minimum, x, maximum):
+            return max(minimum, min(x, maximum))
+
+        self.life_time += frame_time
+        distance = Ball.RUN_SPEED_PPS * frame_time
+        self.total_frames += Ball.FRAMES_PER_ACTION * Ball.ACTION_PER_TIME * frame_time
+        self.frame = int(self.total_frames) % 5
+        self.x += (self.x_dir * distance)
+        self.x = clamp(0, self.x, 800)
         self.y -= frame_time * self.speed
 
     def get_bb(self):

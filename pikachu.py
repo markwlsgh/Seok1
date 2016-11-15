@@ -19,7 +19,7 @@ class Pikachu:
 
 
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = 0, 70
         self.frame = random.randint(0, 7)
         self.life_time = 0.0
         self.total_frames = 0.0
@@ -52,7 +52,7 @@ class Pikachu:
         if(self.jumping == 1):
             self.total_jump +=  self.jumpSpeed * frame_time
             self.y =  self.total_jump
-            if(self.total_jump >= 250):
+            if(self.total_jump >= 180):
                 self.jumping = 2
         if self.jumping == 2:
             self.total_jump -= self.jumpSpeed * frame_time
