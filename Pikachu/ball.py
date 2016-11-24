@@ -43,7 +43,7 @@ class Ball:
         self.x = clamp(0, self.x, 800)
         self.y -= (self.y_dir * distance)
 
-        if(self.y > 325 ):
+        if(self.y > 320 ):
             self.y_dir *= -1
         #if (self.y > 325):
         #    self.y_dir *= -1

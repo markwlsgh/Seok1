@@ -6,6 +6,9 @@ from pico2d import *
 class Map:
     def __init__(self):
         self.image = load_image('map2.png')
+        self.bgm = load_music('BGM02.MID')
+        self.bgm.set_volume(64)
+        self.bgm.repeat_play()
         self.x= 212
         self.y= 312
 

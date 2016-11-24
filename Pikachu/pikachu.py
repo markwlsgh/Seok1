@@ -14,6 +14,7 @@ class Pikachu:
     FRAMES_PER_ACTION = 5
 
     image = None
+    jump_sound = None
 
     STAND , JUMP , SKILL  = 0, 1, 2
 
@@ -36,6 +37,9 @@ class Pikachu:
         self.speed = 2
         if Pikachu.image == None:
             Pikachu.image = load_image('Pikachu.png')
+        if Pikachu.jump_sound == None:
+            Pikachu.jump_sound = load_wav('Data_3.wav')
+            Pikachu.jump_sound.set_volume(32)
 
 
     def update(self, frame_time):
@@ -57,12 +61,13 @@ class Pikachu:
         if(self.jumping == 1):
             self.total_jump +=  self.jumpSpeed * frame_time
             self.y =  self.total_jump
+            self.jump_sound.play()
             if(self.total_jump >= 180):
                 self.jumping = 2
         if self.jumping == 2:
             self.total_jump -= self.jumpSpeed * frame_time
             self.y = self.total_jump
-            if (self.total_jump <= self.tempy):
+            if (self.total_jump <= 70):
                 self.jumping = 0
                 self.test = True
                 self.state = self.STAND
